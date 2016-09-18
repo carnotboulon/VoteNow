@@ -87,36 +87,45 @@ class Person(RenderModel):
     lastName = ndb.StringProperty(indexed=True)
     surname = ndb.StringProperty(indexed=True)		
     email = ndb.StringProperty(indexed=True)	# Key Name
-    type = ndb.StringProperty(indexed=True, choices=["Player","Public"]) 
+    type = ndb.StringProperty(indexed=True, choices=["Player","Public"])
 
 class Event(RenderModel):
     _use_cache = False
     _use_memcache = False
     name = ndb.StringProperty(indexed=True)
     date = ndb.DateProperty(indexed =  True, required = True)	# Expense date.
+    weather = ndb.StringProperty(indexed=False)
+    time = ndb.TimeProperty(indexed=False)
+    place = ndb.GeoPtProperty(indexed=False)
+    voteType = ndb.StringProperty(indexed=False, choices=["Maillons","123"])
+    comment = ndb.StringProperty()
     
 class Presence(RenderModel):
     _use_cache = False
     _use_memcache = False
     person = ndb.KeyProperty(kind='Person', indexed = True, required = True)
+    comment = ndb.StringProperty()
     
 class Vote(RenderModel):
     _use_cache = False
     _use_memcache = False
-    fort = ndb.KeyProperty(kind='Person', indexed = True, required = True)
+    fort = ndb.KeyProperty(kind='Person', indexed=False)
     fortComment = ndb.StringProperty(indexed=False)
     fortRoulette = ndb.BooleanProperty()            # True if person voted roulette.
-    faible = ndb.KeyProperty(kind='Person', indexed = True, required = True)
+    faible = ndb.KeyProperty(kind='Person', indexed=False)
     faibleRoulette = ndb.BooleanProperty()          # True if person voted roulette.
     faibleComment = ndb.StringProperty(indexed=False)
-    boulette = ndb.KeyProperty(kind='Person', indexed = True, required = True)
+    boulette = ndb.KeyProperty(kind='Person', indexed = False)
     bouletteComment = ndb.StringProperty(indexed=False)
-    announced = ndb.BooleanProperty()               # True if vote has been annoucend to team.
+    announced = ndb.BooleanProperty()               # True if vote has been announced to team.
 
 class Stat(RenderModel):
     _use_cache = False
     _use_memcache = False
-    pass
+    player = ndb.KeyProperty(kind='Person', indexed=False)
+    type = ndb.StringProperty(indexed=False, choices=["goalFor","goalAgainst","forcedPCFor", "assist", "pcFor", "pcAgainst", "greenCard","yellowCard","redCard"])
+    amount = ndb.IntegerProperty()
+    comment = ndb.StringProperty()
 
 class AdminPage(webapp2.RequestHandler):
     def get(self):
