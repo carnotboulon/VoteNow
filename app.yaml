@@ -1,0 +1,23 @@
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /resources/
+  static_dir: resources/
+- url: /.*
+  script: VoteNow.app
+
+  
+builtins:
+- remote_api: on
+# [END handlers]
+
+# [START libraries]
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+# [END libraries]
